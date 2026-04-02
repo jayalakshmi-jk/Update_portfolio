@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Jayalakshmi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0d0f14;
+            --surface: #161a23;
+            --nav-bg: #111318;
+            --accent: #c9a96e;
+            --accent2: #8eb8c9;
+            --text: #e8e4dc;
+            --muted: #7a7d85;
+            --border: rgba(201,169,110,0.18);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .whole-container { display: flex; min-height: 100vh; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 200px;
+            min-width: 200px;
+            background: var(--nav-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 40px 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+        .sidebar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            padding: 0 24px 32px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 13px;
+            transition: all 0.3s;
+            border-left: 2px solid transparent;
+        }
+        .sidebar a i { width: 16px; font-size: 12px; }
+        .sidebar a:hover, .sidebar a.active {
+            color: var(--accent);
+            background: rgba(201,169,110,0.06);
+            border-left-color: var(--accent);
+            padding-left: 28px;
+        }
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 24px;
+            border-top: 1px solid var(--border);
+        }
+        .sidebar-bottom a {
+            display: flex; align-items: center; gap: 8px;
+            color: var(--muted); font-size: 12px; text-decoration: none;
+            padding: 8px 0; border: none; background: none; border-left: none; transition: color 0.3s;
+        }
+        .sidebar-bottom a:hover { color: var(--accent); background: none; padding-left: 0; border-left: none; }
+
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 16px; left: 16px;
+            z-index: 1000;
+            background: var(--nav-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 40px; height: 40px;
+            align-items: center; justify-content: center;
+            cursor: pointer; flex-direction: column; gap: 5px; padding: 10px;
+        }
+        .hamburger span { display: block; width: 18px; height: 2px; background: var(--accent); border-radius: 2px; transition: all 0.3s; }
+        .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 998; backdrop-filter: blur(4px); }
+
+        /* MAIN */
+        .main {
+            flex: 1;
+            padding: 60px 80px;
+            max-width: 900px;
+        }
+
+        .page-label {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.2s;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 4vw, 54px);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.4s;
+        }
+        h1 em { font-style: italic; color: var(--accent); }
+
+        /* Profile section */
+        .profile-row {
+            display: flex;
+            gap: 48px;
+            align-items: flex-start;
+            margin-bottom: 56px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease forwards 0.6s;
+        }
+
+        .profile-img-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+        .profile-img-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            opacity: 0.4;
+            animation: pulseBorder 3s ease-in-out infinite;
+        }
+        @keyframes pulseBorder {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.02); }
+        }
+        .profile-img-wrap img {
+            width: 140px;
+            height: 140px;
+            border-radius: 10px;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(20%);
+            transition: filter 0.4s;
+        }
+        .profile-img-wrap img:hover { filter: grayscale(0%); }
+
+        .profile-bio h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .profile-bio .role {
+            font-size: 13px;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .profile-bio p {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.75;
+        }
+
+        /* Two-col cards */
+        .cards-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            opacity: 0;
+        }
+        .info-card:nth-child(1) { animation: slideLeft 0.9s ease forwards 0.8s; }
+        .info-card:nth-child(2) { animation: slideRight 0.9s ease forwards 0.8s; }
+
+        .info-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .info-card h3 i { font-size: 14px; }
+
+        .info-card ul { list-style: none; }
+        .info-card ul li {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.7;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            padding-left: 14px;
+            position: relative;
+        }
+        .info-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            background: var(--accent);
+            transform: translateY(-50%);
+        }
+        .info-card ul li:last-child { border-bottom: none; }
+
+        /* Skills chips */
+        .skills-section {
+            opacity: 0;
+            animation: fadeUp 0.9s ease forwards 1s;
+            margin-bottom: 48px;
+        }
+        .skills-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+        .chip {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--muted);
+            background: var(--surface);
+            transition: all 0.3s;
+            cursor: default;
+        }
+        .chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(201,169,110,0.08);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (max-width: 900px) {
+            .main { padding: 60px 40px; }
+        }
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .sidebar {
+                position: fixed; left: -220px; top: 0; height: 100vh;
+                z-index: 999; transition: left 0.35s cubic-bezier(.4,0,.2,1); width: 220px;
+            }
+            .sidebar.open { left: 0; }
+            .nav-overlay.show { display: block; }
+            .main { padding: 80px 28px 48px; }
+            .cards-row { grid-template-columns: 1fr; }
+            .profile-row { flex-direction: column; align-items: center; text-align: center; gap: 28px; }
+        }
+        @media (max-width: 425px) {
+            .profile-img-wrap img { width: 110px; height: 110px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-overlay" id="overlay" onclick="toggleNav()"></div>
+<button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+</button>
+
+<div class="whole-container">
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">JK Portfolio</div>
+        <a href="index.html"><i class="fas fa-house"></i> Home</a>
+        <a href="about.html" class="active"><i class="fas fa-user"></i> About</a>
+        <a href="project.html"><i class="fas fa-code"></i> Projects</a>
+        <a href="achievement.html"><i class="fas fa-trophy"></i> Achievements</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        <div class="sidebar-bottom">
+            <a href="Assests/RESUME_JAYALAKSHMI.pdf" target="_blank" download>
+                <i class="fas fa-download"></i> Download CV
+            </a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <p class="page-label">Get to know me</p>
+        <h1>About <em>Me</em></h1>
+
+        <div class="profile-row">
+            <div class="profile-img-wrap">
+                <img src="Assests/jaya.jpg" alt="Jayalakshmi">
+            </div>
+            <div class="profile-bio">
+                <h2>Jayalakshmi Kamaraj</h2>
+                <p class="role">Web Developer · Frontend Enthusiast</p>
+                <p>I'm a passionate web developer currently undergoing training at DCKAP Palli, Chennai. I love crafting beautiful, user-friendly websites and am always eager to learn new technologies and grow in the field of web development.</p>
+            </div>
+        </div>
+
+        <div class="cards-row">
+            <div class="info-card">
+                <h3><i class="fas fa-graduation-cap"></i> Education & Journey</h3>
+                <ul>
+                    <li>Diploma in Computer Engineering — Seshasayee Institute of Technology, Trichy</li>
+                    <li>Currently training at DCKAP Palli, Chennai</li>
+                    <li>Completed Internship in Web Development at Galwin Technology</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3><i class="fas fa-heart"></i> Interests</h3>
+                <ul>
+                    <li>Passionate about building user-friendly websites</li>
+                    <li>Enjoy reading tech blogs and exploring new technologies</li>
+                    <li>Love watching movies in my free time</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="skills-section">
+            <h3><i class="fas fa-bolt"></i> Skills & Technologies</h3>
+            <div class="chips">
+                <span class="chip">HTML</span>
+                <span class="chip">CSS</span>
+                <span class="chip">JavaScript</span>
+                <span class="chip">MySQL</span>
+                <span class="chip">Responsive Design</span>
+                <span class="chip">GitHub</span>
+                <span class="chip">LeetCode</span>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    function toggleNav() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('show');
+    }
+</script>
+</body>
+</html>

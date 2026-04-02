@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jayalakshmi — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0d0f14;
+            --surface: #161a23;
+            --nav-bg: #111318;
+            --accent: #c9a96e;
+            --accent2: #8eb8c9;
+            --text: #e8e4dc;
+            --muted: #7a7d85;
+            --border: rgba(201,169,110,0.18);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;  
+            overflow-x: hidden;
+        }
+
+        /* Ambient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -30%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -20%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(142,184,201,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* LAYOUT */
+        .whole-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* SIDEBAR NAV */
+        .sidebar {
+            width: 200px;
+            min-width: 200px;
+            background: var(--nav-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 40px 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            padding: 0 24px 32px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s, background 0.3s, padding-left 0.3s;
+            border-left: 2px solid transparent;
+            position: relative;
+        }
+        .sidebar a i { width: 16px; font-size: 12px; }
+        .sidebar a:hover, .sidebar a.active {
+            color: var(--accent);
+            background: rgba(201,169,110,0.06);
+            border-left-color: var(--accent);
+            padding-left: 28px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 24px;
+            border-top: 1px solid var(--border);
+        }
+        .sidebar-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            text-decoration: none;
+            padding: 8px 0;
+            border: none;
+            background: none;
+            border-left: none;
+            transition: color 0.3s;
+        }
+        .sidebar-bottom a:hover { color: var(--accent); background: none; padding-left: 0; border-left: none; }
+
+        /* HAMBURGER */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1000;
+            background: var(--nav-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+        }
+        .hamburger span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.3s;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(42px, 6vw, 80px);
+            line-height: 1.1;
+            font-weight: 700;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease forwards 0.5s;
+        }
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            font-size: clamp(14px, 1.5vw, 17px);
+            color: var(--muted);
+            font-weight: 300;
+            margin-bottom: 40px;
+            max-width: 440px;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeUp 0.9s ease forwards 0.7s;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeUp 0.9s ease forwards 0.9s;
+        }
+
+        .btn {
+            padding: 13px 28px;
+            border-radius: 4px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #0d0f14;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: transparent;
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Floating decorative line */
+        .deco-line {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards 1.4s;
+        }
+
+        /* Stats row */
+        .stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 56px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease forwards 1.1s;
+        }
+        .stat-item { text-align: center; }
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--accent);
+            display: block;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--nav-bg);
+            border-top: 1px solid var(--border);
+            padding: 20px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--muted);
+        }
+        .footer-social { display: flex; gap: 16px; }
+        .footer-social a {
+            color: var(--muted);
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+        .footer-social a:hover { color: var(--accent); }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* MOBILE NAV OVERLAY */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 998;
+            backdrop-filter: blur(4px);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .main { padding: 60px 40px; }
+            .footer { padding: 16px 40px; }
+            .stats { gap: 32px; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .sidebar {
+                position: fixed;
+                left: -220px;
+                top: 0;
+                height: 100vh;
+                z-index: 999;
+                transition: left 0.35s cubic-bezier(.4,0,.2,1);
+                width: 220px;
+            }
+            .sidebar.open { left: 0; }
+            .nav-overlay.show { display: block; }
+            .main { padding: 80px 28px 48px; }
+            .footer { padding: 14px 28px; flex-direction: column; gap: 10px; text-align: center; }
+            .stats { gap: 24px; flex-wrap: wrap; justify-content: center; margin-top: 36px; }
+        }
+
+        @media (max-width: 425px) {
+            .hero-cta { flex-direction: column; align-items: center; }
+            .btn { width: 200px; text-align: center; }
+            .stats { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-overlay" id="overlay" onclick="toggleNav()"></div>
+<button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+</button>
+
+<div class="whole-container">
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">JK Portfolio</div>
+        <a href="index.html" class="active"><i class="fas fa-house"></i> Home</a>
+        <a href="about.html"><i class="fas fa-user"></i> About</a>
+        <a href="project.html"><i class="fas fa-code"></i> Projects</a>
+        <a href="achievement.html"><i class="fas fa-trophy"></i> Achievements</a>
+        <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        <div class="sidebar-bottom">
+            <a href="Assests/RESUME_JAYALAKSHMI.pdf" target="_blank" download>
+                <i class="fas fa-download"></i> Download CV
+            </a>
+        </div>
+    </nav>
+
+    <main class="main">
+        <span class="hero-tag">Web Developer & Designer</span>
+        <h1 class="hero-title">Hey, I'm <em>Jaya!</em></h1>
+        <p class="hero-sub">Welcome to my personal portfolio — where creativity meets clean code. Explore my projects, skills, and journey in web development.</p>
+        <div class="hero-cta">
+            <a href="project.html" class="btn btn-primary">View Projects</a>
+            <a href="contact.html" class="btn btn-outline">Get in Touch</a>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-num">3+</span>
+                <span class="stat-label">Projects</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">5+</span>
+                <span class="stat-label">Skills</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">2</span>
+                <span class="stat-label">Certificates</span>
+            </div>
+        </div>
+        <div class="deco-line"></div>
+    </main>
+</div>
+
+<footer class="footer">
+    <span>&copy; 2025 Jayalakshmi Kamaraj. All rights reserved.</span>
+    <div class="footer-social">
+        <a href="https://mail.google.com/mail/u/0/" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        <a href="https://www.linkedin.com/in/jayalakshmi-k-988988379/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/jayalakshmi-jk" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+    </div>
+</footer>
+
+<script>
+    function toggleNav() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('show');
+    }
+</script>
+</body>
+</html>
